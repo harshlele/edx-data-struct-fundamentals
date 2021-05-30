@@ -1,0 +1,22 @@
+1 - 2 - 3 - 4 - 5
+
+c1,c2
+
+c1 = 1;
+if(!c1 or eq) c1 = c2; return;
+
+c2 = c1.next;
+
+while(c2){
+    if(c2 == s){
+        c2 = c2.next;
+        c1.next = c2;
+        break;
+    }
+    c1 = c2;
+    c2 = c2.next;
+}
+
+userid : 0012822 pass: Pasword@1
+
+Tra
