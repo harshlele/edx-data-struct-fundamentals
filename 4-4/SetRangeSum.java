@@ -307,12 +307,12 @@ public class SetRangeSum {
     }
 
     public static void main(String[] args) throws IOException {
-        
+        /*
         FileInputStream is = new FileInputStream(new File("tests/05"));
         System.setIn(is);
         PrintStream os = new PrintStream(new File("tests/ans-05.txt"));
         System.setOut(os);
-        
+        */
         new SetRangeSum();
     }
 
