@@ -18,7 +18,6 @@ class SplayTreeEx {
     
         void splay(Node n){
             if(n == null || n == root) return;
-            
             //zig
             if(n.parent == root){
                 if(root.left == n){
@@ -27,7 +26,7 @@ class SplayTreeEx {
                     n.right.left = right;
                     
                     n.right.parent = n;
-                    if(n.right.left != null) n.right.left.parent = n.right.left; 
+                    if(n.right.left != null) n.right.left.parent = n.right; 
                     root = n;
                 }
                 else{
@@ -36,7 +35,7 @@ class SplayTreeEx {
                     n.left.right = left;
     
                     n.left.parent = n;
-                    if(n.left.right != null) n.left.right.parent = root;
+                    if(n.left.right != null) n.left.right.parent = n.left;
     
                     root = n;
                 }
@@ -54,14 +53,14 @@ class SplayTreeEx {
                     parent.right.left = right;
     
                     parent.right.parent = parent;
-                    if(parent.right.left != null) parent.right.left.parent = parent.right.left;
+                    if(parent.right.left != null) parent.right.left.parent = parent.right;
     
                     right = n.right;
                     n.right = parent;
                     n.right.left = right;
     
                     n.right.parent = n;
-                    if(n.right.left != null) n.right.left.parent = n.right.left;
+                    if(n.right.left != null) n.right.left.parent = n.right;
     
                     if(p == null){
                         root = n;
@@ -85,14 +84,14 @@ class SplayTreeEx {
                     parent.left.right = left;
     
                     parent.left.parent = parent;
-                    if(parent.left.right != null) parent.left.right.parent = parent.left.right;
+                    if(parent.left.right != null) parent.left.right.parent = parent.left;
     
                     left = n.left;
                     n.left = parent;
                     n.left.right = left;
     
                     n.left.parent = n;
-                    if(n.left.right != null) n.left.right.parent = n.left.right;
+                    if(n.left.right != null) n.left.right.parent = n.left;
     
                     if(p == null){
                         root = n;
@@ -116,14 +115,14 @@ class SplayTreeEx {
                     n.left.right = left;
     
                     n.left.parent = n;
-                    if(n.left.right != null) n.left.right.parent = n.left.right;
+                    if(n.left.right != null) n.left.right.parent = n.left;
                     
                     Node right = n.right;
                     n.right = grandparent;
                     n.right.left = right;
     
                     n.right.parent = n;
-                    if(n.right.left != null) n.right.left.parent = n.right.left;
+                    if(n.right.left != null) n.right.left.parent = n.right;
     
                     if(p == null){
                         root = n;
@@ -146,14 +145,14 @@ class SplayTreeEx {
                     n.right.left = right;
     
                     n.right.parent = n;
-                    if(n.right.left != null) n.right.left.parent = n.right.left;
+                    if(n.right.left != null) n.right.left.parent = n.right;
                     
                     Node left = n.left;
                     n.left = grandparent;
                     n.left.right = left;
     
                     n.left.parent = n;
-                    if(n.left.right != null) n.left.right.parent = n.left.right;
+                    if(n.left.right != null) n.left.right.parent = n.left;
     
                     if(p == null){
                         root = n;
@@ -219,6 +218,7 @@ class SplayTreeEx {
                 if(curr.value == val){
                     splay(curr);
                     found = true;
+                    break;
                 }
                 else if(curr.value > val){
                     if(curr.left != null){
@@ -227,6 +227,7 @@ class SplayTreeEx {
                     else{
                         splay(curr);
                         found = false;
+                        break;
                     }
                 }
                 else{
@@ -236,6 +237,7 @@ class SplayTreeEx {
                     else{
                         splay(curr);
                         found = false;
+                        break;
                     }
                 }
             }
@@ -253,8 +255,11 @@ class SplayTreeEx {
         s.add(10);
         s.add(7);
         s.add(2);
-        s.add(12);      //TODO: fix the self-parenting!!!
-
+        s.add(12);      
+        System.out.println(s.find(7));
+        System.out.println(s.find(6));
+        s.add(6);
+        System.out.println(s.find(6));
         System.out.println(s.root);
     }
 }
