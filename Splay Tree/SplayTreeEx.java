@@ -246,8 +246,77 @@ class SplayTreeEx {
 
         }
 
-    }
+        void delete(int key){
+            if(root == null) return;
+            Node curr = root;
+            while(curr.value != key){
+                if(curr.value > key){
+                    if(curr.left != null){
+                        curr = curr.left;
+                    }
+                    else break;
+                }
+                else{
+                    if(curr.right != null){
+                        curr = curr.right;
+                    }
+                    else break;
+                }
+            }
+            if(curr.value != key){
+                return;
+            }
+            Node parent = curr.parent;
+            //TODO: fix this!!!
+            if(curr.left == null && curr.right == null){
+                if(parent != null){
+                    if(parent.left == curr) parent.left = null;
+                    else parent.right = null;
+                    splay(parent);
+                    return;
+                }
+            }
+            else if(curr.left != null){
+                Node pred = inOrderPredecessor(curr);
+                int temp = curr.value;
+                curr.value = pred.value;
+                pred.value = temp;
+                delete(key);
+            }
+            else{
+                Node succ = inOrderSuccessor(curr);
+                int temp = curr.value;
+                curr.value = succ.value;
+                succ.value = temp;
+                delete(key);
+            }
 
+        }
+
+        Node inOrderSuccessor(Node n){
+            Node right = n.right;
+            while(right.left != null){
+                right = right.left;
+            }
+            return right;
+        }
+
+        Node inOrderPredecessor(Node n){
+            Node left = n.left;
+            while(left.right != null){
+                left = left.right;
+            }
+            return left;
+        }
+
+        void inOrder(Node n){
+            if(n.left != null) inOrder(n.left);
+            System.out.print(n.value + " ");
+            if(n.right != null) inOrder(n.right);
+
+        }
+    
+    }
 
     public static void main(String[] args){
         SplayTree s = new SplayTree();
@@ -260,6 +329,9 @@ class SplayTreeEx {
         System.out.println(s.find(6));
         s.add(6);
         System.out.println(s.find(6));
-        System.out.println(s.root);
+        s.delete(6);
+        System.out.println(s.find(6));
+        System.out.println("\n\n\n");
+        s.inOrder(s.root);
     }
 }
