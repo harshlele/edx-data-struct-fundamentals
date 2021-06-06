@@ -267,7 +267,6 @@ class SplayTreeEx {
                 return;
             }
             Node parent = curr.parent;
-            //TODO: fix this!!!
             if(curr.left == null && curr.right == null){
                 if(parent != null){
                     if(parent.left == curr) parent.left = null;
@@ -275,20 +274,65 @@ class SplayTreeEx {
                     splay(parent);
                     return;
                 }
+                else{
+                    root = null;
+                }
             }
             else if(curr.left != null){
                 Node pred = inOrderPredecessor(curr);
-                int temp = curr.value;
-                curr.value = pred.value;
-                pred.value = temp;
-                delete(key);
+                if(pred == curr.left){
+                    if(curr.parent != null){
+                        if(curr.parent.left == curr){
+                            curr.parent.left = curr.left;
+                        }
+                        else{
+                            curr.parent.right = curr.left;
+                        }
+                        curr.left.parent = curr.parent;    
+                    }
+                    else{
+                        root = pred;
+                        root.right = curr.right;
+                        root.parent = null;
+                        if(root.right != null) root.right.parent = root;
+                    }
+                }
+                else{
+                    curr.value = pred.value;
+                    if(pred.left != null){
+                        pred.parent.right = pred.left;
+                        pred.left.parent = pred.parent;
+                    }
+                    else pred.parent.right = null;
+                }
             }
             else{
                 Node succ = inOrderSuccessor(curr);
-                int temp = curr.value;
-                curr.value = succ.value;
-                succ.value = temp;
-                delete(key);
+                if(succ == curr.right){
+                    if(curr.parent != null){
+                        if(curr.parent.left == curr){
+                            curr.parent.left = curr.right;
+                        }
+                        else{
+                            curr.parent.right = curr.right;
+                        }
+                        curr.right.parent = curr.parent;    
+                    }
+                    else{
+                        root = succ;
+                        root.left = curr.left;
+                        root.parent = null;
+                        if(root.left != null) root.left.parent = root;                        
+                    }
+                }
+                else{
+                    curr.value = succ.value;
+                    if(succ.right != null){
+                        succ.parent.left = succ.right;
+                        succ.right.parent = succ.parent;
+                    }
+                    else succ.parent.left = null;    
+                }
             }
 
         }
@@ -310,6 +354,7 @@ class SplayTreeEx {
         }
 
         void inOrder(Node n){
+            if(n == null) return;
             if(n.left != null) inOrder(n.left);
             System.out.print(n.value + " ");
             if(n.right != null) inOrder(n.right);
@@ -331,7 +376,28 @@ class SplayTreeEx {
         System.out.println(s.find(6));
         s.delete(6);
         System.out.println(s.find(6));
-        System.out.println("\n\n\n");
+        System.out.println("");
+        s.inOrder(s.root);
+        s.delete(2);
+        s.delete(12);
+        s.delete(10);
+        s.delete(7);
+        s.delete(5);
+        s.add(1);
+        s.add(2);
+        s.add(3);
+        s.add(4);
+        s.add(5);
+        s.add(6);
+        s.add(7);
+        s.find(1);
+        s.find(5);
+        s.delete(5);
+        s.find(1);
+        s.delete(1);
+        s.delete(10);
+        System.out.println(s.find(12));
+        System.out.println("");
         s.inOrder(s.root);
     }
 }
