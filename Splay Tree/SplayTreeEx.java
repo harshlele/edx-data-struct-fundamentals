@@ -337,6 +337,49 @@ class SplayTreeEx {
 
         }
 
+        Node[] split(int key){
+            if(root == null) return new Node[]{};
+            if(root.left == null && root.right == null){
+                return new Node[]{root,null};
+            }
+
+            boolean found = find(key);
+            if(!found && root.value > key){
+                Node right = root;
+                Node left = root.left;
+                right.left = null;
+                left.parent = null;
+                
+                //set root to null so no operations run on the root...?
+                root = null; 
+
+                return new Node[]{left,right};
+            }
+            else{
+                Node left = root;
+                Node right = root.right;
+                left.right = null;
+                right.parent = null;
+
+                //set root to null so no operations run on the root...?
+                root = null; 
+                
+                return new Node[]{left,right};
+            }
+        }
+
+        void join(Node left, Node right){
+            root = left;
+            Node curr = root;
+            while(curr.right != null){
+                curr = curr.right;
+            }
+            splay(curr);
+
+            root.right = right;
+            root.right.parent = root;
+        }
+
         Node inOrderSuccessor(Node n){
             Node right = n.right;
             while(right.left != null){
@@ -360,44 +403,28 @@ class SplayTreeEx {
             if(n.right != null) inOrder(n.right);
 
         }
+
+        void splitPrint(int key){
+            Node[] arr = split(key);
+            join(arr[0], arr[1]);
+            int c = 2;
+        }
     
     }
 
     public static void main(String[] args){
         SplayTree s = new SplayTree();
-        s.add(5);
+        s.add(0);
+        s.add(20);
         s.add(10);
-        s.add(7);
-        s.add(2);
-        s.add(12);      
-        System.out.println(s.find(7));
-        System.out.println(s.find(6));
-        s.add(6);
-        System.out.println(s.find(6));
-        s.delete(6);
-        System.out.println(s.find(6));
-        System.out.println("");
-        s.inOrder(s.root);
-        s.delete(2);
-        s.delete(12);
-        s.delete(10);
-        s.delete(7);
-        s.delete(5);
-        s.add(1);
-        s.add(2);
-        s.add(3);
-        s.add(4);
-        s.add(5);
-        s.add(6);
-        s.add(7);
-        s.find(1);
-        s.find(5);
-        s.delete(5);
-        s.find(1);
-        s.delete(1);
-        s.delete(10);
-        System.out.println(s.find(12));
-        System.out.println("");
-        s.inOrder(s.root);
-    }
+        s.add(60);
+        s.add(70);
+        s.add(50);
+        s.add(40);
+        s.add(30);
+        s.add(80);
+        s.add(90);
+        s.splitPrint(30);
+        s.inOrder(s.root);    
+   }
 }
