@@ -30,20 +30,50 @@ public class HashSubstring {
     }
 
     private static List<Integer> getOccurrences(Data input) {
-        String s = input.pattern, t = input.text;
+        String p = input.pattern, t = input.text;
+        List<Integer> occurrences = new ArrayList<Integer>();
+        int m = p.length(), n = t.length();
+        
+        //int q = 500009;
+        double pInt = 0;
+        double tInt = 0;
+
+        //double h = Math.pow(10, m-1) % q;
+
+        //calc int values of pattern and first m chars in text
+        for(int i = 0; i < m; i++){
+            pInt = (pInt * 10 + (int)p.charAt(i))/* % q*/;
+            tInt = (tInt * 10 + (int)t.charAt(i))/* % q*/; 
+        }
+
+        for(int j = 0; j <= n - m; j++){
+            if(pInt == tInt){
+                if(p.equals(t.substring(j,j+m))){
+                    occurrences.add(j);
+                }
+            }
+            if( j < n-m )
+                //tInt = (10*(tInt - (t.charAt(j) * h)) + (int)t.charAt(j + m)) % q; //fix!!!!
+                tInt = 10* (tInt - t.charAt(j)*Math.pow(10,m-1)) + (int)t.charAt(j + m);
+        }
+    
+
+
+        /*
         int m = s.length(), n = t.length();
         List<Integer> occurrences = new ArrayList<Integer>();
         for (int i = 0; i + m <= n; ++i) {
-	    boolean equal = true;
-	    for (int j = 0; j < m; ++j) {
-		if (s.charAt(j) != t.charAt(i + j)) {
-		     equal = false;
- 		    break;
-		}
-	    }
+            boolean equal = true;
+            for (int j = 0; j < m; ++j) {
+                if (s.charAt(j) != t.charAt(i + j)) {
+                    equal = false;
+                    break;
+                }
+            }
             if (equal)
                 occurrences.add(i);
-	}
+	    }
+        */
         return occurrences;
     }
 
