@@ -1,6 +1,5 @@
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -34,16 +33,16 @@ public class HashSubstring {
         List<Integer> occurrences = new ArrayList<Integer>();
         int m = p.length(), n = t.length();
         
-        //int q = 500009;
+        int q = 500009;
         double pInt = 0;
         double tInt = 0;
 
-        //double h = Math.pow(10, m-1) % q;
+        double h = Math.pow(10, m-1) % q;
 
         //calc int values of pattern and first m chars in text
         for(int i = 0; i < m; i++){
-            pInt = (pInt * 10 + (int)p.charAt(i))/* % q*/;
-            tInt = (tInt * 10 + (int)t.charAt(i))/* % q*/; 
+            pInt = (pInt * 10 + (int)p.charAt(i)) % q;
+            tInt = (tInt * 10 + (int)t.charAt(i)) % q; 
         }
 
         for(int j = 0; j <= n - m; j++){
@@ -52,9 +51,14 @@ public class HashSubstring {
                     occurrences.add(j);
                 }
             }
-            if( j < n-m )
-                //tInt = (10*(tInt - (t.charAt(j) * h)) + (int)t.charAt(j + m)) % q; //fix!!!!
-                tInt = 10* (tInt - t.charAt(j)*Math.pow(10,m-1)) + (int)t.charAt(j + m);
+            if( j < n-m ){
+                double newVal = (10*(tInt - (t.charAt(j) * h)) + (int)t.charAt(j + m));
+                if(newVal < 0)
+                    tInt = ((newVal % q) + q) % q;
+                else 
+                    tInt = newVal % q;
+            }
+                //tInt = 10* (tInt - t.charAt(j)*Math.pow(10,m-1)) + (int)t.charAt(j + m);
         }
     
 
