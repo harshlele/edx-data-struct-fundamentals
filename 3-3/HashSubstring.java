@@ -2,6 +2,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.Random;
 
 public class HashSubstring {
 
@@ -28,37 +29,43 @@ public class HashSubstring {
         }
     }
 
+    private static double getHash(String s,int start, int len, int prime, int x){
+        double hash = 0;
+        int j = 0;
+        for(int i = start; i < start + len; i++){
+            hash += ((s.charAt(i) - 'a')*Math.pow(x,j)) % prime;
+            j++;
+        }
+        return hash;
+    }
+
     private static List<Integer> getOccurrences(Data input) {
         String p = input.pattern, t = input.text;
         List<Integer> occurrences = new ArrayList<Integer>();
         int m = p.length(), n = t.length();
         
-        int q = 500009;
+        int q = 53;
+        int x = new Random().nextInt(q - 1) + 1;
         double pInt = 0;
         double tInt = 0;
 
-        double h = Math.pow(10, m-1) % q;
-
         //calc int values of pattern and first m chars in text
-        for(int i = 0; i < m; i++){
-            pInt = (pInt * 10 + (int)p.charAt(i)) % q;
-            tInt = (tInt * 10 + (int)t.charAt(i)) % q; 
-        }
+        pInt = getHash(p, 0, m, q, x);
+        tInt = getHash(t, n-m,m, q, x);
 
-        for(int j = 0; j <= n - m; j++){
+        for(int j = n-m; j >= 0; j--){
             if(pInt == tInt){
                 if(p.equals(t.substring(j,j+m))){
-                    occurrences.add(j);
+                    occurrences.add(0,j);
                 }
             }
-            if( j < n-m ){
-                double newVal = (10*(tInt - (t.charAt(j) * h)) + (int)t.charAt(j + m));
-                if(newVal < 0)
-                    tInt = ((newVal % q) + q) % q;
-                else 
-                    tInt = newVal % q;
+            if( j > 0 ){
+                double adj = (tInt * x + (t.charAt(j - 1) - 'a') - (t.charAt(j + m - 1) - 'a')*(Math.pow(x,m) % q)) % q;
+                if(adj < 0) {
+                    adj = (adj + q) % q; 
+                }
+                tInt = adj; 
             }
-                //tInt = 10* (tInt - t.charAt(j)*Math.pow(10,m-1)) + (int)t.charAt(j + m);
         }
     
 
