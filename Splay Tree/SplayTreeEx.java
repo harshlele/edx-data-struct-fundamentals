@@ -407,7 +407,6 @@ class SplayTreeEx {
         void splitPrint(int key){
             Node[] arr = split(key);
             join(arr[0], arr[1]);
-            int c = 2;
         }
     
     }
