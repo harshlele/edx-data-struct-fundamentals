@@ -23,7 +23,7 @@ class AVLTreeEx{
         int calcHeight(Node n){
             if(n == null) return -1;
             else{
-                return 1 + Math.max(n.left.height, n.right.height);
+                return 1 + Math.max(calcHeight(n.left),calcHeight(n.right));
             }
         }
     
@@ -33,7 +33,9 @@ class AVLTreeEx{
             if(n.left == null) return -1;
             else if(n.right == null) return 1;
             */
-            return n.left.height - n.right.height;
+            int left = n.left != null ? n.left.height : -1;
+            int right = n.right != null ? n.right.height : -1;
+            return left - right;
         }
 
         void insert(int val){
@@ -50,8 +52,8 @@ class AVLTreeEx{
                     else{
                         curr.left = new Node(val);
                         curr.left.parent = curr;
+                        curr.height = 1;    // either 0 or 1 node to the right
                         curr = curr.left;
-                        curr.height = calcHeight(curr);
                         break;
                     }
                 }
@@ -62,8 +64,8 @@ class AVLTreeEx{
                     else{
                         curr.right = new Node(val);
                         curr.right.parent = curr;
+                        curr.height = 1;        // either 0 or 1 node to the left
                         curr = curr.right;
-                        curr.height = calcHeight(curr);
                         break;
                     }
                 }
@@ -74,20 +76,21 @@ class AVLTreeEx{
 
         void rebalance(Node n){
             while(n != null){
+                
+                int left = n.left != null ? n.left.height : -1;
+                int right = n.right != null ? n.right.height : -1;
+                n.height = 1 + Math.max(left,right);
+
                 int bf = calcBalance(n);
-                if (Math.abs(bf) <= 1){
-                    n = n.parent;
-                }
-                else{
+                if (Math.abs(bf) > 1){
                     if(bf < 0){
                         rotateRightChild(n);
-                        n = n.parent;
                     }
                     else{
                         rotateLeftChild(n);
-                        n = n.parent;
                     }
                 }
+                n = n.parent;
             }
 
         }
@@ -136,9 +139,7 @@ class AVLTreeEx{
                 newN.parent = p;
             }
 
-            newN.height += 1;
-            newN.left.height -= 1;
-
+            newN.left.height -= 2;
 
         }
 
@@ -187,8 +188,7 @@ class AVLTreeEx{
                 newN.parent = p;
             }
 
-            newN.height += 1;
-            newN.right.height -= 1;
+            newN.right.height -= 2;
 
         }
 
@@ -200,8 +200,16 @@ class AVLTreeEx{
     public static void main(String[] args){
         System.out.println("test");
         
-        AVLTree s = new AVLTree(10);
-
+        AVLTree s = new AVLTree(40);
+        s.insert(20);
+        s.insert(50);
+        s.insert(10);
+        s.insert(25);
+        s.insert(52);
+        s.insert(54);
+        s.insert(8);
+        s.insert(4);
+        System.out.println(s);
 
     }
 }
