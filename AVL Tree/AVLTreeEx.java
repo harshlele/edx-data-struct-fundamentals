@@ -23,7 +23,9 @@ class AVLTreeEx{
         int calcHeight(Node n){
             if(n == null) return -1;
             else{
-                return 1 + Math.max(calcHeight(n.left),calcHeight(n.right));
+                int left = n.left != null ? n.left.height : -1;
+                int right = n.right != null ? n.right.height : -1;
+                return 1 + Math.max(left,right);
             }
         }
     
@@ -77,9 +79,7 @@ class AVLTreeEx{
         void rebalance(Node n){
             while(n != null){
                 
-                int left = n.left != null ? n.left.height : -1;
-                int right = n.right != null ? n.right.height : -1;
-                n.height = 1 + Math.max(left,right);
+                n.height = calcHeight(n);
 
                 int bf = calcBalance(n);
                 if (Math.abs(bf) > 1){
@@ -108,7 +108,11 @@ class AVLTreeEx{
                 left.right = right;
                 left.parent = right;
 
-                if(cRight != null) right.left = cRight;
+                if(cRight != null) {
+                    right.left = cRight;
+                    cRight.parent = right;
+                }
+                else right.left = null;
                 
                 n.right = left;
                 left.parent = n;
@@ -127,7 +131,10 @@ class AVLTreeEx{
             Node cLeft = newN.left;
             newN.left = n;
             n.parent = newN;
-            if(cLeft != null) n.right = cLeft;
+            if(cLeft != null) {
+                n.right = cLeft;
+                cLeft.parent = n;
+            }
             
             if(p != null){
                 if(p.right == n){
@@ -156,7 +163,11 @@ class AVLTreeEx{
                 right.left = left;
                 left.parent = right;
 
-                if(cLeft != null) left.right = cLeft;
+                if(cLeft != null) {
+                    left.right = cLeft;
+                    cLeft.parent = left;
+                }
+                else left.right = null;
                 
                 n.left = right;
                 right.parent = n;
@@ -176,7 +187,10 @@ class AVLTreeEx{
             Node cRight = newN.right;
             newN.right = n;
             n.parent = newN;
-            if(cRight != null) n.left = cRight;
+            if(cRight != null) {
+                n.left = cRight;
+                cRight.parent = n;
+            }
             
             if(p != null){
                 if(p.right == n){
@@ -206,7 +220,8 @@ class AVLTreeEx{
         s.insert(10);
         s.insert(25);
         s.insert(52);
-        s.insert(54);
+        s.insert(43);
+        s.insert(44);
         s.insert(8);
         s.insert(4);
         System.out.println(s);
