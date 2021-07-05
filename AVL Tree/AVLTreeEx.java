@@ -206,6 +206,92 @@ class AVLTreeEx{
 
         }
 
+        void delete(int val){
+            if(root == null) return;
+            Node curr = root;
+            while(curr != null){
+                if(curr.val == val){
+                    Node toRebal = removeNode(curr);
+                    rebalance(toRebal);
+                    break;
+                }
+                else if(curr.val > val){
+                    if(curr.left == null) return;
+                    else{
+                        curr = curr.left;
+                    }
+                }
+                else{
+                    if(curr.right == null) return;
+                    else{
+                        curr = curr.right;
+                    }
+                }
+            }
+            
+        }
+
+        Node removeNode(Node n){
+            if(n.left == null && n.right == null){
+                Node p = n.parent;
+                if(p.left == n) p.left = null;
+                else p.right = null;
+                return p;
+            }
+            else if(n.left != null){
+                
+                Node left = n.left;
+                while(left.right != null){
+                    left = left.right;
+                }
+                
+                if(left == n.left){
+                    Node p = n.parent;
+                    Node r = n.right;
+                    if(p.left == n){
+                        p.left = left;
+                    }
+                    else{
+                        p.right = left;
+                    }
+                    left.parent = p;
+                    if(r != null) left.right = r;
+                    return p;
+                }
+                else{
+                    n.val = left.val;
+                    return removeNode(left);
+                }
+
+            }
+            else{
+
+                Node right = n.right;
+                while(right.left != null){
+                    right = right.left;
+                }
+                
+                if(right == n.right){
+                    Node p = n.parent;
+                    Node l = n.left;
+                    if(p.left == n){
+                        p.left = right;
+                    }
+                    else{
+                        p.right = right;
+                    }
+                    right.parent = p;
+                    if(l != null) right.left = l;
+                    return p;
+                }
+                else{
+                    n.val = right.val;
+                    return removeNode(right);
+                }
+
+            }
+        }
+
     }
 
         
