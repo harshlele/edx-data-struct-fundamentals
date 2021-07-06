@@ -255,7 +255,11 @@ class AVLTreeEx{
                         p.right = left;
                     }
                     left.parent = p;
-                    if(r != null) left.right = r;
+
+                    if(r != null) {
+                        left.right = r;
+                        r.parent = left;
+                    }
                     return p;
                 }
                 else{
@@ -281,7 +285,10 @@ class AVLTreeEx{
                         p.right = right;
                     }
                     right.parent = p;
-                    if(l != null) right.left = l;
+                    if(l != null) {
+                        right.left = l;
+                        l.parent = right;
+                    }
                     return p;
                 }
                 else{
@@ -310,6 +317,7 @@ class AVLTreeEx{
         s.insert(44);
         s.insert(8);
         s.insert(4);
+        s.delete(8);
         System.out.println(s);
 
     }
