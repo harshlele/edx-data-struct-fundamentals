@@ -76,6 +76,58 @@ class AVLTreeEx{
             rebalance(curr);
         }
 
+        void delete(int val){
+            if(root == null) return;
+            Node curr = root;
+            while(curr != null){
+                if(curr.val == val){
+                    Node toRebal = removeNode(curr);
+                    rebalance(toRebal);
+                    break;
+                }
+                else if(curr.val > val){
+                    if(curr.left == null) return;
+                    else{
+                        curr = curr.left;
+                    }
+                }
+                else{
+                    if(curr.right == null) return;
+                    else{
+                        curr = curr.right;
+                    }
+                }
+            }
+            
+        }
+        
+        boolean search(int val){
+            if(root == null) return false;
+            
+            boolean found = false;
+            Node curr = root;
+            while(curr != null){
+                if(curr.val == val){
+                    found = true;
+                    break;
+                }
+                else if(curr.val > val){
+                    if(curr.left == null) break;
+                    else{
+                        curr = curr.left;
+                    }
+                }
+                else{
+                    if(curr.right == null) break;
+                    else{
+                        curr = curr.right;
+                    }
+                }
+            }
+
+            return found;
+        }
+
         void rebalance(Node n){
             while(n != null){
                 
@@ -204,31 +256,6 @@ class AVLTreeEx{
 
             newN.right.height -= 2;
 
-        }
-
-        void delete(int val){
-            if(root == null) return;
-            Node curr = root;
-            while(curr != null){
-                if(curr.val == val){
-                    Node toRebal = removeNode(curr);
-                    rebalance(toRebal);
-                    break;
-                }
-                else if(curr.val > val){
-                    if(curr.left == null) return;
-                    else{
-                        curr = curr.left;
-                    }
-                }
-                else{
-                    if(curr.right == null) return;
-                    else{
-                        curr = curr.right;
-                    }
-                }
-            }
-            
         }
 
         Node removeNode(Node n){
